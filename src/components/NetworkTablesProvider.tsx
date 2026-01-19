@@ -30,5 +30,5 @@ export default function NetworkTablesProvider(props: PropsWithChildren<Props>) {
     }
 
 
-    return <NetworkTablesContext value={ntContext} children={props.children} />
+    return <NetworkTablesContext value={ntContext}>{props.children}</NetworkTablesContext>
 }
