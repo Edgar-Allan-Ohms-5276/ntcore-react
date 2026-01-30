@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "module": "es6",
-    "target": "es6",
+    "module": "nodenext",
+    "target": "esnext",
     "sourceMap": true,
     "allowJs": false,
     "jsx": "react",
     "declaration": true,
-    "moduleResolution": "bundler",
+    "moduleResolution": "nodenext",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,

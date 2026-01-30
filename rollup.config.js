@@ -13,7 +13,7 @@ export default {
     }
   ],
   plugins: [
-    typescript({})
+    typescript()
   ],
   external: ['react', 'ntcore-ts-client']
 }

@@ -1,5 +1,5 @@
 import type { NetworkTablesTypeInfo, NetworkTablesTypes } from "ntcore-ts-client"
-import { useTopic, UseTopicOptions } from "./useTopic"
+import { useTopic, UseTopicOptions } from "./useTopic.js"
 
 type UsePublishTopicOptions<T extends NetworkTablesTypes> = Omit<UseTopicOptions<T>, "publish">
 

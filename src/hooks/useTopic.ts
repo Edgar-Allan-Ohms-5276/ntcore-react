@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { NetworkTablesContext } from "../components/NetworkTablesProvider";
+import { NetworkTablesContext } from "../components/NetworkTablesProvider.js";
 import type { NetworkTablesTypeInfo, NetworkTablesTypes } from "ntcore-ts-client";
 
 export type UseTopicOptions<T extends NetworkTablesTypes> = {
