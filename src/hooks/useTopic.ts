@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { NetworkTablesContext } from "../components/NetworkTablesProvider.js";
+import { NetworkTablesContext } from "../components/NetworkTablesProvider";
 import type { NetworkTablesTypeInfo, NetworkTablesTypes } from "ntcore-ts-client";
 
 export type UseTopicOptions<T extends NetworkTablesTypes> = {
@@ -10,7 +10,7 @@ export type UseTopicOptions<T extends NetworkTablesTypes> = {
     defaultValue?: T
 }
 
-export default function useTopic<T extends NetworkTablesTypes>(
+export function useTopic<T extends NetworkTablesTypes>(
     name: string,
     typeInfo: NetworkTablesTypeInfo,
     options?: UseTopicOptions<T>

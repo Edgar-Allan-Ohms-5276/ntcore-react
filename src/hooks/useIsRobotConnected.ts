@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { NetworkTablesContext } from "../components/NetworkTablesProvider.js";
 
-export default function useIsRobotConnected(): boolean {
+export function useIsRobotConnected(): boolean {
     const ntClient = useContext(NetworkTablesContext)
     const [isRobotConnectedState, setIsRobotConnectedState] = useState(false)
 

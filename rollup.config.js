@@ -1,0 +1,19 @@
+import typescript from '@rollup/plugin-typescript';
+import pkg from './package.json' with { type: 'json' }
+
+export default {
+  input: 'src/index.ts',
+  output: [
+    {
+      file: pkg.main,
+      format: 'cjs',
+      exports: 'named',
+      sourcemap: true,
+      strict: false
+    }
+  ],
+  plugins: [
+    typescript({})
+  ],
+  external: ['react', 'ntcore-ts-client']
+}

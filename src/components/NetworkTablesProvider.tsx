@@ -19,7 +19,7 @@ type Props = {
     config: NetworkTablesProviderConfig
 }
 
-export default function NetworkTablesProvider(props: PropsWithChildren<Props>) {
+export function NetworkTablesProvider(props: PropsWithChildren<Props>) {
     let ntContext = null
 
     if ('team' in props.config) {

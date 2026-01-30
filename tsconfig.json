@@ -1,23 +1,23 @@
 {
   "compilerOptions": {
-    "module": "nodenext",
-    "target": "es2022",
-    "types": [],
+    "outDir": "dist",
+    "module": "es6",
+    "target": "es6",
     "sourceMap": true,
+    "allowJs": false,
+    "jsx": "react",
     "declaration": true,
-    "outDir": "./dist",
-    "declarationMap": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-    "strict": true,
-    "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
-    "isolatedModules": true,
-    "noUncheckedSideEffectImports": true,
-    "moduleDetection": "force",
-    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "esModuleInterop": true,
+    "strict": true
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "example", "rollup.config.js"]
 }
