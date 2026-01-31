@@ -3,7 +3,7 @@ import { useTopic, UseTopicOptions } from "./useTopic.js"
 
 type UsePublishTopicOptions<T extends NetworkTablesTypes> = Omit<UseTopicOptions<T>, "publish">
 
-export function usePublishTopic<T extends NetworkTablesTypes>(name: string, typeInfo: NetworkTablesTypeInfo, options?: UsePublishTopicOptions<T>) {
+export function usePublishTopic<T extends NetworkTablesTypes>(name: string, typeInfo: NetworkTablesTypeInfo, options?: UsePublishTopicOptions<T>): [T | null, (_: T) => void] {
     const [ value, setValue ] = useTopic(name, typeInfo, { ...options, publish: true })
     return [ value, setValue ]
 }

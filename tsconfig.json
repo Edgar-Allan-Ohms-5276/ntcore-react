@@ -1,23 +1,15 @@
 {
-  "compilerOptions": {
-    "outDir": "dist",
-    "module": "nodenext",
-    "target": "esnext",
-    "sourceMap": true,
-    "allowJs": false,
-    "jsx": "react",
-    "declaration": true,
-    "moduleResolution": "nodenext",
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "esModuleInterop": true,
-    "strict": true
-  },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist", "example", "rollup.config.js"]
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "esnext",
+		"allowJs": true,
+		"checkJs": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"moduleResolution": "bundler",
+		"noEmit": true,
+    "jsx": "react-jsx"
+	},
+	"include": ["src/**/*", "test/**/*", "jest.config.js", "rollup.config.mjs"]
 }
