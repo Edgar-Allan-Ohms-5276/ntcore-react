@@ -23,7 +23,6 @@ export function useTopic<T extends NetworkTablesTypes>(
     )
 
     useEffect(() => {
-        console.log(1)
         if (topic != null && options?.publish === true) {
             topic.publish({
                 cached: options?.cached,
