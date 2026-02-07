@@ -1,7 +1,8 @@
 import { NetworkTables } from "ntcore-ts-client"
 import React, { type PropsWithChildren } from "react"
+import { NetworkTablesReact } from "../NetworkTablesReact"
 
-export const NetworkTablesContext = React.createContext<NetworkTables | null>(null)
+export const NetworkTablesContext = React.createContext<NetworkTablesReact | null>(null)
 
 export type NetworkTablesProviderConfigByTeam = {
     team: number,
@@ -20,15 +21,15 @@ type Props = {
 }
 
 export function NetworkTablesProvider(props: PropsWithChildren<Props>) {
-    let ntContext = null
+    let ntClient = null
 
     if ('team' in props.config) {
-        ntContext = NetworkTables.getInstanceByTeam(props.config.team, props.config.port)
+        ntClient = NetworkTables.getInstanceByTeam(props.config.team, props.config.port)
     }
     if ('uri' in props.config) {
-        ntContext = NetworkTables.getInstanceByURI(props.config.uri, props.config.port)
+        ntClient = NetworkTables.getInstanceByURI(props.config.uri, props.config.port)
     }
 
 
-    return <NetworkTablesContext value={ntContext}>{props.children}</NetworkTablesContext>
+    return <NetworkTablesContext value={ntClient && new NetworkTablesReact(ntClient)}>{props.children}</NetworkTablesContext>
 }

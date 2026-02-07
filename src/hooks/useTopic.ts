@@ -1,44 +1,21 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { NetworkTablesContext } from "../components/NetworkTablesProvider.js";
 import type { NetworkTablesTypeInfo, NetworkTablesTypes } from "ntcore-ts-client";
+import { TopicOptions } from "../NetworkTablesReact.js";
 
-export type UseTopicOptions<T extends NetworkTablesTypes> = {
-    publish?: boolean
-    cached?: boolean
-    persistent?: boolean
-    retained?: boolean
-    defaultValue?: T
-}
+export type UseTopicOptions<T extends NetworkTablesTypes> = TopicOptions<T>
 
 export function useTopic<T extends NetworkTablesTypes>(
     name: string,
     typeInfo: NetworkTablesTypeInfo,
     options?: UseTopicOptions<T>
 ): [T | null, (_: T) => void] {
-    const client = useContext(NetworkTablesContext)
+    const ntReact = useContext(NetworkTablesContext)
 
     const topic = useMemo(
-        () => client?.createTopic(name, typeInfo, options?.defaultValue) ?? null,
-        [client, name, options?.defaultValue, typeInfo]
+        () => ntReact?.getTopic(name, typeInfo, options),
+        [ntReact, name, options, typeInfo]
     )
-
-    useEffect(() => {
-        if (topic != null && options?.publish === true) {
-            topic.publish({
-                cached: options?.cached,
-                persistent: options?.persistent,
-                retained: options?.retained
-            })
-        }
-
-        return () => {
-            if (topic != null && options?.publish === true) {
-                try {
-                    topic.unpublish()
-                } catch (e) {}
-            }
-        }
-    }, [topic, options])
 
     const [value, updateValue] = useState<T | null>(options?.defaultValue ?? null)
 
@@ -50,7 +27,9 @@ export function useTopic<T extends NetworkTablesTypes>(
         }
     }, [topic, updateValue])
 
-    const setValue = topic?.setValue ?? (() => { })
+    const setValue = (value: T) => {
+        topic?.setValue(value)
+    }
 
     return [value, setValue]
 }
