@@ -2,16 +2,22 @@ import { useContext, useEffect, useState } from "react";
 import { NetworkTablesContext } from "../components/NetworkTablesProvider.js";
 
 export function useIsRobotConnected(): boolean {
-    const ntReact = useContext(NetworkTablesContext)
+    const handler = useContext(NetworkTablesContext)
     const [isRobotConnectedState, setIsRobotConnectedState] = useState(false)
 
     useEffect(() => {
-        const removeListener = ntReact?.ntClient?.client?.messenger?.socket?.addConnectionListener((status) => {
-            setIsRobotConnectedState(status)
-        })
+        const connectedCallback = () => setIsRobotConnectedState(true)
+        const disconnectedCallback = () => setIsRobotConnectedState(false)
 
-        return () => removeListener && removeListener()
-    }, [ntReact, setIsRobotConnectedState])
+        handler.addListener("onConnect", connectedCallback)
+        handler.addListener("onDisconnect", disconnectedCallback)
+
+        return () => {
+            handler.removeListener("onConnect", connectedCallback)
+            handler.removeListener("onDisconnect", disconnectedCallback)
+        }
+
+    }, [handler])
 
     return isRobotConnectedState
 }
