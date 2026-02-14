@@ -27,11 +27,13 @@ export function NetworkTablesProvider(props: PropsWithChildren<Props>) {
     }
 
     const handler = useMemo(() => {
+        console.log("making")
         return new NetworkTablesHandler(uri)
     }, [uri])
 
     useEffect(() => {
         if (handler != null) {
+            console.log("connecting")
             handler.client.connect()
             return () => handler.client.disconnect()
         }

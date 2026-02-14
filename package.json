@@ -5,12 +5,12 @@
     "type": "git",
     "url": "git+https://gitlab.com/edgar-allan-ohms/ntcore-react.git"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
+  "main": "./dist/index.min.js",
+  "module": "./dist/index.min.js",
   "typings": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
+      "import": "./dist/index.min.js",
       "types": "./dist/index.d.ts"
     }
   },
@@ -22,6 +22,7 @@
     "lint": "eslint ."
   },
   "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.3.0",
     "@types/react": "^19.2.8",
     "eslint": "^9.39.2",
