@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, type PropsWithChildren } from "react"
+import React, { useEffect, useState, type PropsWithChildren } from "react"
 import { NetworkTablesHandler } from "../NetworkTablesHandler"
 
 export const NetworkTablesContext = React.createContext<NetworkTablesHandler>(new NetworkTablesHandler(""))
@@ -18,6 +18,8 @@ type Props = {
 }
 
 export function NetworkTablesProvider(props: PropsWithChildren<Props>) {
+    const [handler, setHandler] = useState<NetworkTablesHandler>(() => new NetworkTablesHandler(""))
+
     let uri = null
 
     if ('team' in props.config) {
@@ -26,18 +28,13 @@ export function NetworkTablesProvider(props: PropsWithChildren<Props>) {
         uri = props.config.uri
     }
 
-    const handler = useMemo(() => {
-        console.log("making")
-        return new NetworkTablesHandler(uri)
-    }, [uri])
-
     useEffect(() => {
-        if (handler != null) {
-            console.log("connecting")
-            handler.client.connect()
-            return () => handler.client.disconnect()
-        }
-    }, [handler])
+        const newHandler = new NetworkTablesHandler(uri)
+        newHandler.client.connect()
+        setTimeout(() => setHandler(newHandler), 0)
+
+        return () => newHandler.client.disconnect()
+    }, [uri])
 
 
     return <NetworkTablesContext value={handler}>{props.children}</NetworkTablesContext>
