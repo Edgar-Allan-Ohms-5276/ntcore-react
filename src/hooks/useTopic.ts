@@ -1,35 +1,58 @@
-// import { useContext, useEffect, useMemo, useState } from "react";
-// import { NetworkTablesContext } from "../components/NetworkTablesProvider.js";
-// import type { NetworkTablesTypeInfo, NetworkTablesTypes } from "ntcore-ts-client";
-// import { TopicOptions } from "../NetworkTablesReact.js";
+import { useContext, useEffect, useEffectEvent, useState } from "react";
+import { NetworkTablesContext } from "../components/NetworkTablesProvider.js";
+import { TopicProperties } from "@2702rebels/ntcore";
+import { getTypeStringFromValue, NetworkTablesTypes } from "../NetworkTablesHandler.js";
 
-// export type UseTopicOptions<T extends NetworkTablesTypes> = TopicOptions<T>
+type WidenLiteral<T> =
+    T extends string ? string :
+    T extends number ? number :
+    T extends boolean ? boolean :
+    T;
 
-// export function useTopic<T extends NetworkTablesTypes>(
-//     name: string,
-//     typeInfo: NetworkTablesTypeInfo,
-//     options?: UseTopicOptions<T>
-// ): [T | null, (_: T) => void] {
-//     const ntReact = useContext(NetworkTablesContext)
+export type UseTopicOptions = TopicProperties
 
-//     const topic = useMemo(
-//         () => ntReact?.getTopic(name, typeInfo, options),
-//         [ntReact, name, options, typeInfo]
-//     )
+export function useTopic<T extends NetworkTablesTypes>(
+    name: string,
+    defaultValue: WidenLiteral<T>,
+    options?: UseTopicOptions
+): [WidenLiteral<T>, (_: WidenLiteral<T>) => void] {
+    const [value, updateValue] = useState<WidenLiteral<T>>(defaultValue)
 
-//     const [value, updateValue] = useState<T | null>(options?.defaultValue ?? null)
+    const handler = useContext(NetworkTablesContext)
 
-//     useEffect(() => {
-//         const uid = topic?.subscribe(updateValue)
+    const onTopicData = useEffectEvent((topic: string, value: WidenLiteral<T>) => {
+        if (topic === name) {
+            updateValue(value)
+        }
+    })
 
-//         return () => {
-//             if (uid != null) topic?.unsubscribe(uid)
-//         }
-//     }, [topic, updateValue])
+    const setupTopicPublish = useEffectEvent(() => {
+        if (handler != null) {
+            handler.client.publishTopic(name, getTypeStringFromValue(defaultValue), options)
+            handler?.client.setDefaultValue(name, defaultValue)
+        }
+    })
 
-//     const setValue = (value: T) => {
-//         topic?.setValue(value)
-//     }
+    useEffect(() => {
+        if (handler != null) {
+            const callback = onTopicData
 
-//     return [value, setValue]
-// }
+            handler.addListener("onTopicData", callback)
+            const subscription = handler.client.subscribe(name, {})
+            setupTopicPublish()
+
+            return () => {
+                handler.removeListener("onTopicData", callback)
+                handler.client.unpublishTopic(name)
+                handler.client.unsubscribe(subscription)
+            }
+        }
+
+    }, [handler, defaultValue, name])
+
+    const setValue = (value: WidenLiteral<T>) => {
+        handler?.client.setValue(name, value)
+    }
+
+    return [value, setValue]
+}

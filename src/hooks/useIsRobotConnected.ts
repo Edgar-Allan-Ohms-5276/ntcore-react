@@ -6,15 +6,17 @@ export function useIsRobotConnected(): boolean {
     const [isRobotConnectedState, setIsRobotConnectedState] = useState(false)
 
     useEffect(() => {
-        const connectedCallback = () => setIsRobotConnectedState(true)
-        const disconnectedCallback = () => setIsRobotConnectedState(false)
+        if (handler != null) {
+            const connectedCallback = () => setIsRobotConnectedState(true)
+            const disconnectedCallback = () => setIsRobotConnectedState(false)
 
-        handler.addListener("onConnect", connectedCallback)
-        handler.addListener("onDisconnect", disconnectedCallback)
+            handler.addListener("onConnect", connectedCallback)
+            handler.addListener("onDisconnect", disconnectedCallback)
 
-        return () => {
-            handler.removeListener("onConnect", connectedCallback)
-            handler.removeListener("onDisconnect", disconnectedCallback)
+            return () => {
+                handler.removeListener("onConnect", connectedCallback)
+                handler.removeListener("onDisconnect", disconnectedCallback)
+            }
         }
 
     }, [handler])

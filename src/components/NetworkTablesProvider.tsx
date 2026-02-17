@@ -1,7 +1,7 @@
 import React, { useEffect, useState, type PropsWithChildren } from "react"
 import { NetworkTablesHandler } from "../NetworkTablesHandler"
 
-export const NetworkTablesContext = React.createContext<NetworkTablesHandler>(new NetworkTablesHandler(""))
+export const NetworkTablesContext = React.createContext<NetworkTablesHandler | null>(null)
 
 export type NetworkTablesProviderConfigByTeam = {
     team: number
@@ -18,7 +18,7 @@ type Props = {
 }
 
 export function NetworkTablesProvider(props: PropsWithChildren<Props>) {
-    const [handler, setHandler] = useState<NetworkTablesHandler>(() => new NetworkTablesHandler(""))
+    const [handler, setHandler] = useState<NetworkTablesHandler | null>(null)
 
     let uri = null
 
