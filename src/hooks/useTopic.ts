@@ -48,7 +48,7 @@ export function useTopic<T extends NetworkTablesTypes>(
             }
         }
 
-    }, [handler, defaultValue, name])
+    }, [handler, name])
 
     const setValue = (value: WidenLiteral<T>) => {
         handler?.client.setValue(name, value)
