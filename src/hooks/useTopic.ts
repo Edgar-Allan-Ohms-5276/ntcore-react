@@ -1,7 +1,7 @@
 import { useContext, useEffect, useEffectEvent, useState } from "react";
-import { NetworkTablesContext } from "../components/NetworkTablesProvider.js";
+import { NetworkTablesContext } from "../components/NetworkTablesProvider";
 import { TopicProperties } from "@2702rebels/ntcore";
-import { getTypeStringFromValue, NetworkTablesTypes } from "../NetworkTablesHandler.js";
+import { DataType, getTypeStringFromValue, NetworkTablesTypes } from "../NetworkTablesHandler";
 
 type WidenLiteral<T> =
     T extends string ? string :
@@ -9,7 +9,9 @@ type WidenLiteral<T> =
     T extends boolean ? boolean :
     T;
 
-export type UseTopicOptions = TopicProperties
+export type UseTopicOptions = TopicProperties & {
+    dataType?: DataType
+}
 
 export function useTopic<T extends NetworkTablesTypes>(
     name: string,
@@ -28,7 +30,8 @@ export function useTopic<T extends NetworkTablesTypes>(
 
     const setupTopicPublish = useEffectEvent(() => {
         if (handler != null) {
-            handler.client.publishTopic(name, getTypeStringFromValue(defaultValue), options)
+            const dataType = options?.dataType || getTypeStringFromValue(defaultValue)
+            handler.client.publishTopic(name, dataType, options)
             handler?.client.setDefaultValue(name, defaultValue)
         }
     })
